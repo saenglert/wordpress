@@ -1,0 +1,31 @@
+version: "3.1"
+
+services:
+  wordpress:
+    image: wordpress
+    ports:
+      - 80:80
+      - 443:443
+      - 22:22
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wordpress/plugins/kiss-share:/var/www/html/wp-content/plugins/kiss-share
+      - ./wordpress/themes/flat-green:/var/www/html/wp-content/themes/flat-green
+
+  db:
+    build: ./mysql
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: dev
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
